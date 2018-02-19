@@ -1,36 +1,27 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import './App.css';
+import './Home.css';
 import axios from 'axios';
-import Players from './players';
+import Home from './Home';
+import Login from './Login';
 class App extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      loading: true
+      isLoggedIn: false
     };
+    this.onLoginSuccess = this.onLoginSuccess.bind(this)
   }
 
-  componentDidMount() {
-    axios.get("http://localhost:3001/api/recommendations")
-    .then((response) => {
-      const players = response.data.data
-      this.setState({
-        loading: false,
-        players
-      })
-      console.log(response)
-    })
-    .catch((error) => {
-      console.info(error)
-    });
+  onLoginSuccess(){
+    this.setState({isLoggedIn: true})
   }
 
   render() {
     return (
       <div className="App">
-        { this.state.loading ? <span>Loading</span> : <Players players={this.state.players} /> }
+        { this.state.isLoggedIn ? <Home /> : <Login onLoginSuccess={this.onLoginSuccess} /> }
       </div>
     );
   }
