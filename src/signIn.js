@@ -7,14 +7,17 @@ import Login from './Login';
 import Register from './registration';
 class App extends Component {
 
+    constructor(props) {
+        super(props);
+    }
 
-  render() {
-    return (
-      <div className="App">
-         <Register/><Login onLoginSuccess={this.onLoginSuccess} /> 
-      </div>
-    );
-  }
+    render() {
+        return (
+            <div className="App">
+                <Register /><Login onLoginSuccess={this.props.onLoginSuccess} />
+            </div>
+        );
+    }
 }
 
 export default App;

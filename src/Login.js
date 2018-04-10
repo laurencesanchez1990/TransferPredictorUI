@@ -24,7 +24,7 @@ class Login extends Component {
 		axios.post(apiBaseUrl + 'login', payload).then(function (response) {
 			console.log(response);
 				console.log("Login Successful");
-				self.props.onLoginSuccess()
+				self.props.onLoginSuccess(self.state.email)
 		})
 			.catch(function (error) {
 				console.log(error);

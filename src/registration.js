@@ -21,7 +21,9 @@ class Register extends Component{
 		var self = this;
 		var payload={
 			"email": this.state.email,
-			"password": this.state.password
+			"password": this.state.password,
+			"first_name": this.state.first_name,
+			"last_name": this.state.last_name
 			}
 			axios.post(apiBaseUrl + 'registration', payload).then(function (response) {
 				console.log(response);
