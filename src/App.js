@@ -17,9 +17,11 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoggedIn: !! Cookies.get('transferPredictorLogin')
+      isLoggedIn: !! Cookies.get('transferPredictorLogin'),
+      currentRecommendations: ["31", "54", "10", "81", "167", "139", "32", "224", "590", "208", "110", "563", "91", "73", "459"]
     };
     this.onLoginSuccess = this.onLoginSuccess.bind(this)
+    this.getRecommendations = this.getRecommendations.bind(this);
   }
 
   onLoginSuccess(email, history) {
@@ -29,6 +31,12 @@ class App extends Component {
     Cookies.set('transferPredictorLogin', email);
   }
 
+  getRecommendations(recommendations, history) {
+    console.info('foobar', recommendations);
+    this.setState({'currentRecommendations': recommendations});
+    history.push('/')
+  }
+
   render() {
     return (
       <div className="App">
@@ -36,10 +44,10 @@ class App extends Component {
         >
           <div>
             <Route exact path="/" render={(routeProps => (
-              this.state.isLoggedIn ? <Home {...routeProps} /> : <Redirect to={{ pathname: "/signin" }} />
+              this.state.isLoggedIn ? <Home {...routeProps} selectedPlayers={this.state.currentRecommendations} /> : <Redirect to={{ pathname: "/signin" }} />
             ))} />
              <Route exact path="/selectTeam" render={(routeProps => (
-              this.state.isLoggedIn ? <SelectTeam {...routeProps} /> : <Redirect to={{ pathname: "/signin" }} />
+              this.state.isLoggedIn ? <SelectTeam {...routeProps} getRecommendations={(players) => { this.getRecommendations(players, routeProps.history)}} /> : <Redirect to={{ pathname: "/signin" }} />
             ))} />
             <Route exact path="/signin" render={(routeProps) => (
               <SignIn {...routeProps} onLoginSuccess={ (email) => { this.onLoginSuccess(email, routeProps.history)} }/>

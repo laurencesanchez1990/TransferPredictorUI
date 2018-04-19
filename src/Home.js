@@ -10,27 +10,49 @@ class Home extends Component {
     this.state = {
       loading: true
     };
+    console.info(props)
   }
 
   componentDidMount() {
-    axios.get("http://localhost:3001/api/recommendations")
-    .then((response) => {
-      const players = response.data.data
-      this.setState({
-        loading: false,
-        players
+    const self = this;
+    if (this.props.selectedPlayers) {
+      var payload = {
+        "players": JSON.stringify(this.props.selectedPlayers),
+      }
+      console.info('do a post here instead');
+      axios.post("http://localhost:3001/api/recommendations", payload).then(function (response) {
+        const players = response.data.data
+        self.setState({
+          loading: false,
+          players
+        })
+        console.log(response)
       })
-      console.log(response)
-    })
-    .catch((error) => {
-      console.info(error)
-    });
+      .catch((error) => {
+        console.info(error)
+      });  
+      
+    } else {
+
+      axios.get("http://localhost:3001/api/recommendations")
+        .then((response) => {
+          const players = response.data.data
+          self.setState({
+            loading: false,
+            players
+          })
+          console.log(response)
+        })
+        .catch((error) => {
+          console.info(error)
+        });
+    }
   }
 
   render() {
     return (
       <div className="Home">
-        { this.state.loading ? <span>Loading</span> : <Players players={this.state.players} /> }
+        {this.state.loading ? <span>Loading</span> : <Players players={this.state.players} />}
       </div>
     );
   }
